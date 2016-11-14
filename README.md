@@ -32,11 +32,11 @@ const Angular2ExtJSWebpackPlugin = require('angular2-extjs-webpack-plugin');
 module.exports = {
 	devtool: 'inline-source-map',
 	entry: [
-			'./src/index'
+		'./src/index'
 	],
 	output: {
-			path: path.join(__dirname, 'build'),
-			filename: 'index.js'
+		path: path.join(__dirname, 'build'),
+		filename: 'index.js'
 	},
 	plugins: [
 		new ExtJSAngular2WebpackPlugin({
@@ -51,27 +51,27 @@ module.exports = {
 		})
 	],
 	module: {
-			loaders: [
-					{
-							test: /\.js$/,
-							loader: 'babel',
-							include: [
-									path.join(__dirname, 'src')
-							]
-					},
-					{
-							test: /\.css$/,
-							loader: 'style!css'
-					},
-					{
-							test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
-							exclude: /\/favicon.ico$/,
-							loader: 'file',
-							query: {
-									name: 'static/media/[name].[hash:8].[ext]'
-							}
-					}
-			]
+		loaders: [
+			{
+				test: /\.js$/,
+				loader: 'babel',
+				include: [
+						path.join(__dirname, 'src')
+				]
+			},
+			{
+				test: /\.css$/,
+				loader: 'style!css'
+			},
+			{
+				test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+				exclude: /\/favicon.ico$/,
+				loader: 'file',
+				query: {
+					name: 'static/media/[name].[hash:8].[ext]'
+				}
+			}
+		]
 	}
 };
 ```
