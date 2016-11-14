@@ -72,7 +72,7 @@ var indexHTML =
 
 		var dependencies = Angular2ExtJSWebpackPlugin.prototype.dependencies;
 		var uniqueDependencies = [];
-		for ( i = 0; i < dependencies.length; i++ ) {
+		for ( var i = 0; i < dependencies.length; i++ ) {
 			var current = dependencies[i];
 			if (uniqueDependencies.indexOf(current) < 0) uniqueDependencies.push(current);
 		}
