@@ -1,6 +1,4 @@
 
-tsc (creates dist folder)
-cp -r demo dist/demo/
 (commit to git)
 npm version patch
 cp README.md dist/
