@@ -22,6 +22,7 @@ module.exports = {
 </html>
 `
 	},
+
 	bootJS: `
 	var Ext = Ext || {};
 	Ext.Boot = Ext.Boot || (function (emptyFn) {
@@ -34,6 +35,7 @@ module.exports = {
 		return Boot;
 	}(function () {}));
 	`,
+
 	miscCSS: `
 		.x-float-wrap > .x-mask { z-index: 3 !important; pointer-events: all; }
 		.x-floated { z-index: 10000 !important; }

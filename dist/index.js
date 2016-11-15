@@ -7,8 +7,11 @@ var bootJS = require('./artifacts').bootJS;
 var miscCSS = require('./artifacts').miscCSS;
 var createIndexHTML = require('./artifacts').createIndexHTML;
 var chalk = require('chalk');
+var commandExists = require('command-exists');
 
 function Angular2ExtJSWebpackPlugin(options) {
+	Angular2ExtJSWebpackPlugin.prototype.detail = options.detail;
+	Angular2ExtJSWebpackPlugin.prototype.debug = options.debug;
 	Angular2ExtJSWebpackPlugin.prototype.indexHtmlLocation = options.indexHtmlLocation;
 	Angular2ExtJSWebpackPlugin.prototype.indexHtmlTitle = options.indexHtmlTitle;
 	Angular2ExtJSWebpackPlugin.prototype.rootSelector = options.rootSelector;
@@ -21,7 +24,13 @@ function Angular2ExtJSWebpackPlugin(options) {
 }
 
 Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
-	var debug = Angular2ExtJSWebpackPlugin.prototype.debug;
+	var detail = Angular2ExtJSWebpackPlugin.prototype.detail;
+	var debug;
+	if (detail === true) {
+		debug = true;
+	} else {
+		debug = Angular2ExtJSWebpackPlugin.prototype.debug;;
+	}
 	var extThemeAppPath = Angular2ExtJSWebpackPlugin.prototype.extThemeAppPath;
 	var extThemeAppName = Angular2ExtJSWebpackPlugin.prototype.extThemeAppName;
 	var extThemeAppPathAndName = extThemeAppPath + '/' + extThemeAppName;
@@ -30,164 +39,40 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 	var indexHtmlLocation = Angular2ExtJSWebpackPlugin.prototype.indexHtmlLocation;
 	var indexHtmlTitle = Angular2ExtJSWebpackPlugin.prototype.indexHtmlTitle;
 	var rootSelector = Angular2ExtJSWebpackPlugin.prototype.rootSelector;
-	var watch = false;
+
+	var checkIfFrameworkFileExists = function checkIfFrameworkFileExists(cb) {
+
+		commandExists('sencha2', function (err, commandExists) {
+			if (commandExists) {
+				console.log('yes');
+			} else {
+				console.log('no');
+			}
+		});
+
+		try {
+			var stats = fs.lstatSync(extFrameworkPath);
+			if (stats.isDirectory()) {
+				if (debug === true) console.log(chalk.green('***** Ext JS framework folder ' + extFrameworkPath + ' exists\n'));
+				cb();
+			}
+		} catch (e) {
+			console.log(chalk.red('***** ERROR') + ' Ext JS framework path ' + extFrameworkPath + ' does NOT exist');
+			console.log(chalk.red('***** ERROR') + ' Stop this run and install Ext JS ');
+			console.log(chalk.red('***** ERROR') + ' also set or check extFrameworkPath webpack plugin parameter ');
+			console.log('\n');
+			return;
+		}
+	};
 
 	compiler.plugin('run', function (compiler, cb) {
-		console.log(chalk.red('Text in red'));
-		//console.log('*** run');
-		try {
-			var stats = fs.lstatSync(extFrameworkPath);
-			if (stats.isDirectory()) {
-				if (debug === true) console.log('***** ' + extFrameworkPath + ' exists');
-				cb();
-			}
-		} catch (e) {
-			console.log('***** Ext JS framework path ' + extFrameworkPath + ' does NOT exist');
-			console.log('***** Stop this run and install Ext JS ');
-			console.log('***** also set extFrameworkPath plugin parameter ');
-			console.log('\n');
-			return;
-		}
+		checkIfFrameworkFileExists(cb);
 	});
-
 	compiler.plugin('watch-run', function (watching, cb) {
-		try {
-			var stats = fs.lstatSync(extFrameworkPath);
-			if (stats.isDirectory()) {
-				if (debug === true) console.log('\n\n***** ' + extFrameworkPath + ' exists');
-				cb();
-			}
-		} catch (e) {
-			console.log('***** Ext JS framework path ' + extFrameworkPath + ' does NOT exist');
-			console.log('***** Stop this run and install Ext JS ');
-			console.log('***** also set extFrameworkPath plugin parameter ');
-			console.log('\n');
-			return;
-		}
-
-		// watch = true;
-		// try {
-		// 	if(debug === true) console.log('***** checking for ' + process.cwd() + '/' +extThemeAppPathAndName);
-		// 	var stats = fs.lstatSync(process.cwd() + '/' + extThemeAppPathAndName);
-		// 	if (stats.isDirectory()) {
-		// 		if(debug === true) console.log('***** ' + process.cwd() + '/' +extThemeAppPathAndName + ' already exists.\n');
-		// 	}
-		// }
-		// catch (e) {
-		// 	//console.log(e);
-		// 	console.log('***** Ext JS theme project does not exist.');
-		// 	console.log('***** Ext JS Project will be created.');
-		// 	console.log('\n');
-		// }
-		// cb();
-	});
-
-	compiler.plugin('emit', function (compilation, callback) {
-		console.log('************* emit');
-		callback();
-	});
-
-	compiler.plugin('after-emit', function (compilation, callback) {
-		try {
-			var stats = fs.lstatSync(extFrameworkPath);
-			if (stats.isDirectory()) {
-				if (debug === true) console.log('\n\n***** ' + './' + extFrameworkPath + ' exists');
-			}
-		} catch (e) {
-			console.log('\n\n***** Ext JS framework path ' + extFrameworkPath + ' does NOT exist');
-			console.log('***** Stop this run and install Ext JS ');
-			console.log('***** also set extFrameworkPath plugin parameter ');
-			return;
-		}
-
-		try {
-			var stats = fs.lstatSync('./' + extThemeAppPathAndName);
-			if (stats.isDirectory()) {
-				if (debug === true) console.log('\n\n***** ' + './' + extThemeAppPathAndName + ' already exists');
-			}
-		} catch (e) {
-			if (debug === true) console.log('\n\n***** creating Ext JS app named ' + extThemeAppName + '');
-			var theCreateCommand = 'sencha -sdk ' + extFrameworkPath + ' generate app -modern -starter=false ' + extThemeAppName + ' ./' + extThemeAppName;
-			if (debug === true) console.log('\n***** ' + theCreateCommand);
-			execSync(theCreateCommand, { cwd: output, stdio: 'inherit' });
-			if (debug === true) console.log('***** Ext JS app named ' + extThemeAppName + ' is created');
-
-			//if (watch === false) {
-			fs.writeFileSync(extThemeAppPathAndName + "/boot.js", bootJS);
-			if (debug === true) console.log('\n***** ' + extThemeAppPathAndName + '/boot.js' + ' is created.');
-			fs.writeFileSync(extThemeAppPathAndName + "/misc.css", miscCSS);
-			if (debug === true) console.log('***** ' + extThemeAppPathAndName + '/misc.css' + ' is created.');
-			var indexHTML = createIndexHTML(indexHtmlTitle, extThemeAppPathAndName, build, extThemeAppName, rootSelector);
-			fs.writeFileSync(indexHtmlLocation + '/index.html', indexHTML);
-			if (debug === true) console.log('***** ' + indexHtmlLocation + '/index.html' + ' is created.');
-			//}
-		}
-		var dependencies = Angular2ExtJSWebpackPlugin.prototype.dependencies;
-		var uniqueDependencies = [];
-		for (var i = 0; i < dependencies.length; i++) {
-			var current = dependencies[i];
-			if (uniqueDependencies.indexOf(current) < 0) uniqueDependencies.push(current);
-		}
-		var theFile = '';
-		theFile += 'Ext.require([' + '\n';
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
-
-		try {
-			for (var _iterator = uniqueDependencies[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				var dependency = _step.value;
-
-				theFile += "\t'" + dependency + "'," + "\n";
-			}
-		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
-				}
-			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
-				}
-			}
-		}
-
-		var n = theFile.lastIndexOf(",");
-		theFile = theFile.substring(0, n);
-		theFile += '\n' + ']);' + '\n';
-		fs.writeFileSync(extThemeAppPathAndName + "/app.js", theFile);
-		if (debug === true) console.log('\n***** ' + './' + extThemeAppPathAndName + '/' + 'app.js file created:');
-		if (debug === true) console.log(theFile);
-
-		var output = './' + extThemeAppPathAndName;
-
-		var theBuildCommand = 'sencha app build ' + build;
-		if (debug === true) console.log('\n***** ' + theBuildCommand);
-		execSync(theBuildCommand, { cwd: output, stdio: 'inherit' });
-
-		callback();
+		checkIfFrameworkFileExists(cb);
 	});
 
 	compiler.plugin('compilation', function (compilation, params) {
-
-		compilation.mainTemplate.plugin('startup', function (source, module, hash) {
-			console.log('startup');
-			return source;
-		});
-
-		compilation.plugin('normal-module-loader', function (loaderContext, module) {
-			console.log('normal-module-loader');
-			//console.log(module.resource);
-		});
-
-		compilation.plugin('succeed-module', function (module) {
-			console.log('succeed module');
-			//console.log(module);
-		});
-
 		compilation.plugin("build-module", function (module) {
 			this.currentFile = module.resource;
 			if (module.resource && module.resource.endsWith('.ts')) {
@@ -195,28 +80,28 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 					var contents = fs.readFileSync(module.resource, 'utf8');
 					var statements = extractFromNG2(module.context, contents, this.prefix, debug, module.resource);
 					if (statements.length) {
-						if (debug === true) console.log('\n\n***** Ext JS requires in: ' + this.currentFile + '');
-						var _iteratorNormalCompletion2 = true;
-						var _didIteratorError2 = false;
-						var _iteratorError2 = undefined;
+						if (debug === true) console.log(chalk.green('\n\n***** Found Ext JS requires in: ' + this.currentFile + ''));
+						var _iteratorNormalCompletion = true;
+						var _didIteratorError = false;
+						var _iteratorError = undefined;
 
 						try {
-							for (var _iterator2 = statements[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-								var statement = _step2.value;
+							for (var _iterator = statements[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+								var statement = _step.value;
 
-								if (debug === true) console.log(JSON.stringify(statement));
+								if (detail === true) console.log(chalk.blue(JSON.stringify(statement)));
 							}
 						} catch (err) {
-							_didIteratorError2 = true;
-							_iteratorError2 = err;
+							_didIteratorError = true;
+							_iteratorError = err;
 						} finally {
 							try {
-								if (!_iteratorNormalCompletion2 && _iterator2.return) {
-									_iterator2.return();
+								if (!_iteratorNormalCompletion && _iterator.return) {
+									_iterator.return();
 								}
 							} finally {
-								if (_didIteratorError2) {
-									throw _iteratorError2;
+								if (_didIteratorError) {
+									throw _iteratorError;
 								}
 							}
 						}
@@ -231,6 +116,77 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 				}
 			}
 		});
+	});
+
+	compiler.plugin('after-emit', function (compilation, cb) {
+		console.log('\n');
+		try {
+			var stats = fs.lstatSync('./' + extThemeAppPathAndName);
+			if (stats.isDirectory()) {
+				if (debug === true) console.log(chalk.green('***** Ext JS theme project named ' + extThemeAppName + ' exists'));
+			}
+		} catch (e) {
+			var theCreateCommand = 'sencha -sdk ' + extFrameworkPath + ' generate app -modern -starter=false ' + extThemeAppName + ' ./' + extThemeAppName;
+			if (debug === true) console.log(chalk.green('\n***** Running the Sencha Cmd: ' + theCreateCommand));
+			execSync(theCreateCommand, { cwd: output, stdio: 'inherit' });
+			if (debug === true) console.log(chalk.green('***** Ext JS app named ' + extThemeAppName + ' is created'));
+
+			fs.writeFileSync(extThemeAppPathAndName + "/boot.js", bootJS);
+			if (debug === true) console.log(chalk.green('\n***** ' + extThemeAppPathAndName + '/boot.js' + ' is created.'));
+			fs.writeFileSync(extThemeAppPathAndName + "/misc.css", miscCSS);
+			if (debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + '/misc.css' + ' is created.'));
+			var indexHTML = createIndexHTML(indexHtmlTitle, extThemeAppPathAndName, build, extThemeAppName, rootSelector);
+			fs.writeFileSync(indexHtmlLocation + '/index.html', indexHTML);
+			if (debug === true) console.log(chalk.green('***** ' + indexHtmlLocation + '/index.html' + ' is created.'));
+		}
+		var dependencies = Angular2ExtJSWebpackPlugin.prototype.dependencies;
+		var uniqueDependencies = [];
+		for (var i = 0; i < dependencies.length; i++) {
+			var current = dependencies[i];
+			if (uniqueDependencies.indexOf(current) < 0) uniqueDependencies.push(current);
+		}
+		var theFile = '';
+		theFile += 'Ext.require([' + '\n';
+		var _iteratorNormalCompletion2 = true;
+		var _didIteratorError2 = false;
+		var _iteratorError2 = undefined;
+
+		try {
+			for (var _iterator2 = uniqueDependencies[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+				var dependency = _step2.value;
+
+				theFile += "\t'" + dependency + "'," + "\n";
+			}
+		} catch (err) {
+			_didIteratorError2 = true;
+			_iteratorError2 = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion2 && _iterator2.return) {
+					_iterator2.return();
+				}
+			} finally {
+				if (_didIteratorError2) {
+					throw _iteratorError2;
+				}
+			}
+		}
+
+		var n = theFile.lastIndexOf(",");
+		theFile = theFile.substring(0, n);
+		theFile += '\n' + ']);' + '\n';
+		fs.writeFileSync(extThemeAppPathAndName + "/app.js", theFile);
+		if (debug === true) console.log(chalk.green('\n***** ' + extThemeAppPathAndName + '/' + 'app.js file created:'));
+		if (detail === true) console.log(chalk.blue(theFile));
+
+		var output = './' + extThemeAppPathAndName;
+		var theBuildCommand = 'sencha app build ' + build;
+		if (debug === true) console.log(chalk.green('\n***** Running the Sencha Cmd: ' + theBuildCommand + '\n'));
+		var rc = execSync(theBuildCommand, { cwd: output, stdio: 'inherit' });
+		console.log('*** rc: ' + rc);
+		if (debug === true) console.log(chalk.green('***** Sencha Cmd: ' + theBuildCommand + ' is completed\n'));
+
+		cb();
 	});
 };
 
