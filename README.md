@@ -11,6 +11,8 @@ You must have Ext JS 6.2+ and Sencha Cmd 6.2+ to use this plugin.
 ## Options
 The Angular2ExtJSWebpackPlugin constructor takes an object with the following properties:
 
+* debug [boolean] True to output debug information.
+* detail [boolean] True to output more detailed debug information.
 * indexHtmlLocation [string] The path to the source file index.html.
 * indexHtmlTitle [string] The title in the index.html.
 * rootSelector [string] the root selector in the index.html file.
@@ -18,7 +20,6 @@ The Angular2ExtJSWebpackPlugin constructor takes an object with the following pr
 * extThemeAppPath [string] The path for the Ext JS Theme project that will be created.
 * extThemeAppName [string] The name of the Ext JS Theme project that will be created.
 * extFrameworkPath [string] The path to the Ext JS framework.
-* debug [boolean] True to output debug information.
 
 ## Example
 

@@ -39,35 +39,35 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function(compiler) {
 	var indexHtmlTitle = Angular2ExtJSWebpackPlugin.prototype.indexHtmlTitle;
 	var rootSelector = Angular2ExtJSWebpackPlugin.prototype.rootSelector;
 
-	var checkIfFrameworkFileExists = function(cb) {
-
-		commandExists('sencha2', function(err, commandExists) {
-			if(commandExists) {
-				console.log('yes')
-			} 
+	var checkIfSenchaSetupGood = function(cb) {
+		commandExists('sencha', function(err, commandExists) {
+			if(!commandExists) {
+				console.log(chalk.red('***** ERROR') + ' Sencha Cmd is not installed');
+				console.log(chalk.red('***** ERROR') + ' Stop this run and install Sencha Cmd ');
+				console.log(chalk.red('***** ERROR') + ' download from: ' + chalk.green('https://www.sencha.com/products/extjs/cmd-download '));
+				return;
+			}
 			else {
-				console.log('no')
+				try {
+					var stats = fs.lstatSync(extFrameworkPath);
+					if (stats.isDirectory()) {
+						if(debug === true) console.log(chalk.green('***** Sencha Ext JS framework folder ' + extFrameworkPath + ' exists\n'));
+						cb();
+					}
+				}
+				catch (e) {
+					console.log(chalk.red('***** ERROR') + ' Sencha Ext JS framework path ' + extFrameworkPath + ' does NOT exist');
+					console.log(chalk.red('***** ERROR') + ' Stop this run and install Sencha Ext JS ');
+					console.log(chalk.red('***** ERROR') + ' download from: ' + chalk.green('https://www.sencha.com/products/extjs '));
+					console.log(chalk.red('***** ERROR') + ' also set or check extFrameworkPath webpack plugin parameter ');
+					return;
+				}
 			}
 		});
-
-		try {
-			var stats = fs.lstatSync(extFrameworkPath);
-			if (stats.isDirectory()) {
-				if(debug === true) console.log(chalk.green('***** Ext JS framework folder ' + extFrameworkPath + ' exists\n'));
-				cb();
-			}
-		}
-		catch (e) {
-			console.log(chalk.red('***** ERROR') + ' Ext JS framework path ' + extFrameworkPath + ' does NOT exist');
-			console.log(chalk.red('***** ERROR') + ' Stop this run and install Ext JS ');
-			console.log(chalk.red('***** ERROR') + ' also set or check extFrameworkPath webpack plugin parameter ');
-			console.log('\n');
-			return;
-		}
 	}
 
-	compiler.plugin('run', (compiler, cb) => {checkIfFrameworkFileExists(cb);});
-	compiler.plugin('watch-run', (watching, cb) => {checkIfFrameworkFileExists(cb);});
+	compiler.plugin('run', (compiler, cb) => {checkIfSenchaSetupGood(cb);});
+	compiler.plugin('watch-run', (watching, cb) => {checkIfSenchaSetupGood(cb);});
 
 	compiler.plugin('compilation', function(compilation, params) {
 		compilation.plugin("build-module", function(module) {
@@ -138,7 +138,6 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function(compiler) {
 		var theBuildCommand = 'sencha app build ' + build;
 		if(debug === true) console.log(chalk.green('\n***** Running the Sencha Cmd: ' + theBuildCommand + '\n'));
 		var rc = execSync( theBuildCommand, { cwd: output, stdio: 'inherit' });
-		console.log('*** rc: ' + rc)
 		if(debug === true) console.log(chalk.green('***** Sencha Cmd: ' + theBuildCommand + ' is completed\n'));
 
 		cb();
