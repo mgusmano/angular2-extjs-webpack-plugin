@@ -52,6 +52,8 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function(compiler) {
 	});
 
 	compiler.plugin('after-emit', function(compilation, cb) {
+		var senchaCmdOut = '';
+		if (options.senchaCmdOutputShow === false) { senchaCmdOut = ' > ' + options.senchaCmdOutputFile;}
 		try {
 			var stats = fs.lstatSync('./' + extThemeAppPathAndName);
 			if (stats.isDirectory()) {
@@ -59,7 +61,7 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function(compiler) {
 			}
 		}
 		catch (e) {
-			var theCreateCommand = 'sencha -sdk ' + options.extFrameworkPath + ' generate app -modern -starter=false ' + options.extThemeAppName + ' ./' + options.extThemeAppName;
+			var theCreateCommand = 'sencha -sdk ' + options.extFrameworkPath + ' generate app -modern -starter=false ' + options.extThemeAppName + ' ./' + options.extThemeAppName + senchaCmdOut;
 			if(debug === true) console.log(chalk.green('***** Running the Sencha Cmd: ' + theCreateCommand));
 			execSync( theCreateCommand, { cwd: output, stdio: 'inherit' });
 			if(debug === true) console.log(chalk.green('***** Ext JS app named ' + options.extThemeAppName + ' is created'))
@@ -89,13 +91,9 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function(compiler) {
 		if(debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + '/' + 'app.js is created'))
 		if(options.detail === true) console.log(chalk.blue(theFile));
 
-		var buildOut = '';
-		if(options.senchaCmdOutputShow === true) {
-			buildOut = ' > ' + options.senchaCmdOutputFile;
-		}
-		var output = './' + extThemeAppPathAndName;
-		var theBuildCommand = 'sencha app build ' + options.build + buildOut;
+		var theBuildCommand = 'sencha app build ' + options.build + senchaCmdOut;
 		if(debug === true) console.log(chalk.green('***** Running the Sencha Cmd: ' + theBuildCommand));
+		var output = './' + extThemeAppPathAndName;
 		var rc = execSync( theBuildCommand, { cwd: output, stdio: 'inherit' });
 		if(debug === true) console.log(chalk.green('***** Sencha Cmd: ' + theBuildCommand + ' is completed'));
 
