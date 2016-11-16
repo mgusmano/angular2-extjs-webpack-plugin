@@ -1,7 +1,7 @@
 {
   "name": "angular2-extjs-webpack-plugin",
   "main": "dist/index.js",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Creates a minimal build of the Ext JS framework for use in Angular2 apps.",
   "scripts": {
     "watch": "babel ./src --out-dir ./dist --watch",
