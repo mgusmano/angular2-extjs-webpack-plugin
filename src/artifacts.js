@@ -2,8 +2,7 @@
 
 module.exports = {
 	createIndexHTML: function(indexHtmlTitle, extThemeAppPathAndName, build, extThemeAppName, rootSelector) {
-	return `
-<!DOCTYPE html>
+	return `<!DOCTYPE html>
 <html>
 	<head>
 		<base href="/">
@@ -11,9 +10,9 @@ module.exports = {
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
-		<script src="../${extThemeAppPathAndName}/Boot.js"></script>
+		<script src="../${extThemeAppPathAndName}/build/Boot.js"></script>
 		<script src="../${extThemeAppPathAndName}/build/${build}/${extThemeAppName}/app.js"></script>
-		<link rel="stylesheet" href="../${extThemeAppPathAndName}/misc.css">
+		<link rel="stylesheet" href="../${extThemeAppPathAndName}/build/misc.css">
 		<link rel="stylesheet" href="../${extThemeAppPathAndName}/build/${build}/${extThemeAppName}/resources/${extThemeAppName}-all.css">
 	</head>
 	<body>
