@@ -8,12 +8,12 @@ module.exports = {
 	Init: function(options, debug, cb) {
 			module.exports.checkIfSenchaSetupGood(options, debug)
 			.then(function() {
-					module.exports.doIndexHTML(options, debug);
-					cb();
+				module.exports.doIndexHTML(options, debug);
+				cb();
 			})
-			// .catch(function(err) {
-			// 		console.log('not cool');
-			// });
+			.catch(function(err) {
+				console.log(err);
+			});
 	},
 
 	checkIfSenchaSetupGood: function(options, debug) {
@@ -23,23 +23,23 @@ module.exports = {
 					console.log(chalk.red('***** ERROR') + ' Sencha Cmd is not installed');
 					console.log(chalk.red('***** ERROR') + ' Stop this run and install Sencha Cmd ');
 					console.log(chalk.red('***** ERROR') + ' download from: ' + chalk.green('https://www.sencha.com/products/extjs/cmd-download '));
-					reject('err');
+					reject('');
 				}
 				else {
 					if(debug === true) console.log(chalk.green('***** Sencha Cmd is installed'));
 					try {
-						var stats = fs.lstatSync(options.extFrameworkPath);
+						var stats = fs.lstatSync(options.extFrameworkPath + '/.sencha');
 						if (stats.isDirectory()) {
 							if(debug === true) console.log(chalk.green('***** Sencha Ext JS framework folder ' + options.extFrameworkPath + ' exists'));
-							resolve(0);
+							resolve('');
 						}
 					}
 					catch (e) {
-						console.log(chalk.red('***** ERROR') + ' Sencha Ext JS framework path ' + options.extFrameworkPath + ' does NOT exist');
-						console.log(chalk.red('***** ERROR') + ' Stop this run and install Sencha Ext JS ');
-						console.log(chalk.red('***** ERROR') + ' download from: ' + chalk.green('https://www.sencha.com/products/extjs '));
+						console.log(chalk.red('***** ERROR') + ' Path ' + options.extFrameworkPath + ' does NOT exist or is NOT a Sencha Ext JS framework folder');
+						console.log(chalk.red('***** ERROR') + ' Stop this run and install Sencha Ext JS or configure a valid folder ');
+						console.log(chalk.red('***** ERROR') + ' download Ext JS from: ' + chalk.green('https://www.sencha.com/products/extjs '));
 						console.log(chalk.red('***** ERROR') + ' also set or check extFrameworkPath webpack plugin parameter ');
-						reject(0);
+						reject('');
 					}
 				}
 			});

@@ -82,7 +82,7 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function(compiler) {
 		var theFile = '';
 		theFile += 'Ext.require([' + '\n';
 		for (let dependency of uniqueDependencies) {
-			theFile += "\t'" + dependency + "'," + "\n";
+			theFile += "'" + dependency + "'," + "\n";
 		}
 		var n=theFile.lastIndexOf(",");
 		theFile=theFile.substring(0,n) 
