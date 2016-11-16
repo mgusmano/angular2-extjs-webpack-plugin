@@ -16,6 +16,7 @@
   "license": "MIT",
   "homepage": "https://github.com/mgusmano/angular2-extjs-webpack-plugin#readme",
   "dependencies": {
+		"babel-polyfill": "^6.16.0",
     "acorn": "^4.0.3",
     "acorn-jsx": "^3.0.1",
     "acorn-object-spread": "^1.0.0",
@@ -28,7 +29,6 @@
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
-    "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.16.0"
   }
 }
