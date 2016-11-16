@@ -1,7 +1,7 @@
 {
   "name": "angular2-extjs-webpack-plugin",
   "main": "dist/index.js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Creates a minimal build of the Ext JS framework for use in Angular2 apps.",
   "scripts": {
     "watch": "babel ./src --out-dir ./dist --watch",
@@ -16,7 +16,7 @@
   "license": "MIT",
   "homepage": "https://github.com/mgusmano/angular2-extjs-webpack-plugin#readme",
   "dependencies": {
-		"babel-polyfill": "^6.16.0",
+    "babel-polyfill": "^6.16.0",
     "acorn": "^4.0.3",
     "acorn-jsx": "^3.0.1",
     "acorn-object-spread": "^1.0.0",
