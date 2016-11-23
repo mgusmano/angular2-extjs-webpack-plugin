@@ -2,7 +2,7 @@
 
 module.exports = {
 
-	appJson: "{\n\tframework: \"ext\",\n\ttoolkit : \"modern\",\n\t\"theme\": \"theme-triton\",\n\t\"requires\": [\n\t\t\"font-awesome\",\n\t\t\"charts\",\n\t\t\"pivot\"\n\t],\n\toutput: {\n\t\tbase: '.',\n\t\tresources: {\n\t\t\tpath: './resources',\n\t\t\tshared: \"./resources\"\n\t\t}\n\t}\n}\n",
+	appJson: "{\n\tframework: \"ext\",\n\ttoolkit : \"modern\",\n\t\"theme\": \"theme-triton\",\n\t\"requires\": [\n\t\t\"font-awesome\",\n\t\t\"charts\",\n\t\t\"pivot\"\n\t],\n\toutput: {\n\t\tbase: '.',\n\t\tresources: {\n\t\t\tpath: './resources',\n\t\t\tshared: \"./resources\"\n\t\t}\n\t}\n\t\"id\": \"9cbb1487-acb8-4265-8440-1d31445a14b5\"\n}\n",
 
 	bootJS2: "var Ext = Ext || {};\nExt.Boot = Ext.Boot || (function (emptyFn) {\n\tvar _tags = (Ext.platformTags = {});\n\tvar Boot = {\n\t\tbrowserNames: {ie:'IE',firefox:'Firefox',safari:'Safari',chrome:'Chrome',edge:'Edge',chromeMobile:'ChromeMobile',chromeiOS:'ChromeiOS',other:'Other'},\n\t\tosNames: {ios:'iOS',android:'Android',mac:'MacOS',win:'Windows',linux:'Linux',chromeOS:'ChromeOS',other:'Other'},\n\t\tbrowserPrefixes: {ie:'MSIE ',edge:'Edge/',firefox:'Firefox/',chrome:'Chrome/',safari:'Version/',chromeMobile:'CrMo/',chromeiOS:'CriOS/'}\n\t};\n\treturn Boot;\n}(function () {}));\n",
 

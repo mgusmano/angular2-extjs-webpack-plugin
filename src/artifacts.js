@@ -17,7 +17,7 @@ module.exports = {
 			path: './resources',
 			shared: "./resources"
 		}
-	}
+	},
 	"id": "9cbb1487-acb8-4265-8440-1d31445a14b5"
 }
 `,
