@@ -2,7 +2,101 @@
 
 module.exports = {
 
-		appJson: "{\n\t\"name\": \"Theme\",\n\t\"version\": \"1.0.0.0\",\n\t\"indexHtmlPath\": \"index.html\",\n\t\"classpath\": [\n\t\t\t\"app\"\n\t],\n\t\"overrides\": [\n\t\t\t\"overrides\"\n\t],\n\t\"framework\": \"ext\",\n\t\"toolkit\": \"modern\",\n\t\"theme\": \"theme-material\",\n\t\"requires\": [\n\t\t\"calendar\",\n\t\t\"charts\",\n\t\t\"d3\",\n\t\t\"ux\",\n\t\t\"pivot\",\n\t\t\"pivot-d3\",\n\t\t\"font-awesome\"\n\t],\n\t\"fashion\": {\n\t\t\t\"inliner\": {\n\t\t\t\t\t\"enable\": false\n\t\t\t}\n\t},\n\t\"sass\": {\n\t\t\t\"namespace\": \"Theme\",\n\t\t\t\"generated\": {\n\t\t\t\t\t\"var\": \"sass/save.scss\",\n\t\t\t\t\t\"src\": \"sass/save\"\n\t\t\t},\n\t\t\t\"etc\": [\n\t\t\t\t\t\"sass/etc/all.scss\"\n\t\t\t],\n\t\t\t\"var\": [\n\t\t\t\t\t\"sass/var/all.scss\",\n\t\t\t\t\t\"sass/var\"\n\t\t\t],\n\t\t\t\"src\": [\n\t\t\t\t\t\"sass/src\"\n\t\t\t]\n\t},\n\t\"js\": [\n\t\t\t{\n\t\t\t\t\t\"path\": \"" + framework.dir + "/build/ext-modern-all-debug.js\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\t\"path\": \"app.js\",\n\t\t\t\t\t\"bundle\": true\n\t\t\t}\n\t],\n\t\"css\": [\n\t\t\t{\n\t\t\t\t\t\"path\": \"" + build.out.css.path + "\",\n\t\t\t\t\t\"bundle\": true,\n\t\t\t\t\t\"exclude\": [\"fashion\"]\n\t\t\t}\n\t],\n\t\t\"loader\": {\n\t\t\t\t\"cache\": false,\n\t\t\t\t\"cacheParam\": \"_dc\"\n\t\t},\n\t\"production\": {\n\t\t\t\"output\": {\n\t\t\t\t\t\"appCache\": {\n\t\t\t\t\t\t\t\"enable\": true,\n\t\t\t\t\t\t\t\"path\": \"cache.appcache\"\n\t\t\t\t\t}\n\t\t\t},\n\t\t\t\"loader\": {\n\t\t\t\t\t\"cache\": \"" + build.timestamp + "\"\n\t\t\t},\n\t\t\t\"cache\": {\n\t\t\t\t\t\"enable\": true\n\t\t\t},\n\t\t\t\"compressor\": {\n\t\t\t\t\t\"type\": \"yui\"\n\t\t\t}\n\t},\n\t\"testing\": {\n\t},\n\t\"development\": {\n\t\t\t\"watch\": {\n\t\t\t\t\t\"delay\": 250\n\t\t\t}\n\t},\n\t\"bootstrap\": {\n\t\t\t\"base\": \"" + app.dir + "\",\n\t\t\t\n\t\t\t\"microloader\": \"bootstrap.js\",\n\t\t\t\"css\": \"bootstrap.css\"\n\t},\n\t\"output\": {\n\t\t\t\"base\": \"" + workspace.build.dir + "/" + build.environment + "/" + app.name + "\",\n\t\t\t\"appCache\": {\n\t\t\t\t\t\"enable\": false\n\t\t\t}\n\t},\n\t\"cache\": {\n\t\t\t\"enable\": false,\n\t\t\t\"deltas\": true\n\t},\n\t\"appCache\": {\n\t\t\t\"cache\": [\n\t\t\t\t\t\"index.html\"\n\t\t\t],\n\t\t\t\"network\": [\n\t\t\t\t\t\"*\"\n\t\t\t],\n\t\t\t\"fallback\": []\n\t},\n\t\"resources\": [\n\t\t\t{\n\t\t\t\t\t\"path\": \"resources\",\n\t\t\t\t\t\"output\": \"shared\"\n\t\t\t}\n\t],\n\t\"archivePath\": \"archive\",\n\t\"slicer\": null,\n\t\"ignore\": [\n\t\t\t\"(^|/)CVS(/?$|/.*?$)\"\n\t],\n\t\"id\": \"9cbb1487-acb8-4265-8440-1d31445a14b5\"\n}\n",
+		getAppJson: function getAppJson() {
+				return JSON.stringify({
+						"name": "Theme",
+						"version": "1.0.0.0",
+						"indexHtmlPath": "index.html",
+						"classpath": ["app"],
+						"overrides": ["overrides"],
+						"framework": "ext",
+						"toolkit": "modern",
+						"theme": "theme-material",
+						"requires": ["calendar", "charts", "d3", "ux", "pivot", "pivot-d3", "font-awesome"],
+						"fashion": {
+								"inliner": {
+										"enable": false
+								}
+						},
+						"sass": {
+								"namespace": "Theme",
+								"generated": {
+										"var": "sass/save.scss",
+										"src": "sass/save"
+								},
+								"etc": ["sass/etc/all.scss"],
+								"var": ["sass/var/all.scss", "sass/var"],
+								"src": ["sass/src"]
+						},
+						"js": [{
+								"path": "${framework.dir}/build/ext-modern-all-debug.js"
+						}, {
+								"path": "app.js",
+								"bundle": true
+						}],
+						"css": [{
+								"path": "${build.out.css.path}",
+								"bundle": true,
+								"exclude": ["fashion"]
+						}],
+						"loader": {
+								"cache": false,
+								"cacheParam": "_dc"
+						},
+						"production": {
+								"output": {
+										"appCache": {
+												"enable": true,
+												"path": "cache.appcache"
+										}
+								},
+								"loader": {
+										"cache": "${build.timestamp}"
+								},
+								"cache": {
+										"enable": true
+								},
+								"compressor": {
+										"type": "yui"
+								}
+						},
+						"testing": {},
+						"development": {
+								"watch": {
+										"delay": 250
+								}
+						},
+						"bootstrap": {
+								"base": "${app.dir}",
+
+								"microloader": "bootstrap.js",
+								"css": "bootstrap.css"
+						},
+						"output": {
+								"base": "${workspace.build.dir}/${build.environment}/${app.name}",
+								"appCache": {
+										"enable": false
+								}
+						},
+						"cache": {
+								"enable": false,
+								"deltas": true
+						},
+						"appCache": {
+								"cache": ["index.html"],
+								"network": ["*"],
+								"fallback": []
+						},
+						"resources": [{
+								"path": "resources",
+								"output": "shared"
+						}],
+						"archivePath": "archive",
+						"slicer": null,
+						"ignore": ["(^|/)CVS(/?$|/.*?$)"],
+						"id": "9cbb1487-acb8-4265-8440-1d31445a14b5"
+				});
+		},
 
 		bootJS2: "var Ext = Ext || {};\nExt.Boot = Ext.Boot || (function (emptyFn) {\n\tvar _tags = (Ext.platformTags = {});\n\tvar Boot = {\n\t\tbrowserNames: {ie:'IE',firefox:'Firefox',safari:'Safari',chrome:'Chrome',edge:'Edge',chromeMobile:'ChromeMobile',chromeiOS:'ChromeiOS',other:'Other'},\n\t\tosNames: {ios:'iOS',android:'Android',mac:'MacOS',win:'Windows',linux:'Linux',chromeOS:'ChromeOS',other:'Other'},\n\t\tbrowserPrefixes: {ie:'MSIE ',edge:'Edge/',firefox:'Firefox/',chrome:'Chrome/',safari:'Version/',chromeMobile:'CrMo/',chromeiOS:'CriOS/'}\n\t};\n\treturn Boot;\n}(function () {}));\n",
 

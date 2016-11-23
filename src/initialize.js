@@ -4,7 +4,7 @@ var fs = require("fs");
 var chalk = require('chalk');
 var commandExists = require('command-exists');
 var getIndexHTML = require('./artifacts').getIndexHTML;
-var appJson = require('./artifacts').appJson;
+var getAppJson = require('./artifacts').getAppJson;
 var bootJS = require('./artifacts').bootJS;
 var miscCSS = require('./artifacts').miscCSS;
 var execSync = require('child_process').execSync;
@@ -28,7 +28,7 @@ module.exports = {
 					execSync( theCreateCommand, { cwd: output, stdio: 'inherit' });
 					if(debug === true) console.log(chalk.green('***** Ext JS app named ' + options.extThemeAppName + ' is created'))
 
-					fs.writeFileSync(extThemeAppPathAndName + "/app.json", appJson); 
+					fs.writeFileSync(extThemeAppPathAndName + "/app.json", getAppJson()); 
 					if(debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + '/app.json' + ' is created'))
 
 					var output = './' + extThemeAppPathAndName;
