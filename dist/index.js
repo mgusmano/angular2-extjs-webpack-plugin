@@ -9,6 +9,7 @@ var extractFromNG2 = require("./extractFromNG2");
 var Init = require('./initialize').Init;
 var bootJS = require('./artifacts').bootJS;
 var miscCSS = require('./artifacts').miscCSS;
+var ncp = require('ncp').ncp;
 
 function Angular2ExtJSWebpackPlugin(options) {
 	Angular2ExtJSWebpackPlugin.prototype.options = options;
@@ -28,7 +29,6 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 	var y = chalk.yellow;
 
 	c.plugin('run', function (compiler, cb) {
-		console.log(y('\n***** runx'));
 		Init(options, debug, cb);
 	});
 
@@ -37,11 +37,6 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 	});
 
 	compiler.plugin('compilation', function (compilation, params) {
-
-		// compilation.plugin('normal-module-loader', function(loaderContext, module) {
-		// 	console.log(chalk.yellow('\n***** normal-module-loader'));
-		// 	console.log(chalk.yellow(module.resource));
-		// });
 
 		compilation.plugin('normal-module-loader', function (loaderContext, module) {
 			if (module.resource && module.resource.endsWith('.ts')) {
@@ -88,7 +83,6 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 	compiler.plugin('compilation', function (compilation, params) {
 
 		compilation.plugin("after-emit", function () {
-			//console.log("\ncccccThe compilation is starting to optimize files...");
 
 			var senchaCmdOut = '';
 			if (options.senchaCmdOutputShow === false) {
@@ -159,6 +153,14 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 			var output = './' + extThemeAppPathAndName;
 			var rc = execSync(theBuildCommand, { cwd: output, stdio: 'inherit' });
 			if (debug === true) console.log(chalk.green('***** Sencha Cmd: ' + theBuildCommand + ' is completed'));
+
+			ncp.limit = 16;
+			ncp("Theme/build", "dist/build", function (err) {
+				if (err) {
+					return console.error(err);
+				}
+				console.log('done!');
+			});
 		});
 	});
 

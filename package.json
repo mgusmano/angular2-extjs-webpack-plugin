@@ -16,6 +16,7 @@
   "license": "MIT",
   "homepage": "https://github.com/mgusmano/angular2-extjs-webpack-plugin#readme",
   "dependencies": {
+		"mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "babel-polyfill": "^6.16.0",
     "acorn": "^4.0.3",
