@@ -1,7 +1,7 @@
 const fs = require("fs");
 const chalk = require('chalk');
 const commandExists = require('command-exists');
-//const getIndexHTML = require('./artifacts').getIndexHTML;
+const getIndexHTML = require('./artifacts').getIndexHTML;
 const bootJS = require('./artifacts').bootJS;
 const miscCSS = require('./artifacts').miscCSS;
 var execSync = require('child_process').execSync;
@@ -13,8 +13,6 @@ module.exports = {
 				var extThemeAppPathAndName = options.extThemeAppPath + '/' + options.extThemeAppName;
 				var output = '.';
 
-				var senchaCmdOut = '';
-				if (options.senchaCmdOutputShow === false) { senchaCmdOut = ' > ' + options.senchaCmdOutputFile;}
 				try {
 					var stats = fs.lstatSync('./' + extThemeAppPathAndName);
 					if (stats.isDirectory()) {
@@ -22,22 +20,22 @@ module.exports = {
 					}
 				}
 				catch (e) {
-					var theCreateCommand = 'sencha -sdk ' + options.extFrameworkPath + ' generate app -modern -starter=false ' + options.extThemeAppName + ' ./' + options.extThemeAppName + senchaCmdOut;
+					var theCreateCommand = 'sencha -sdk ' + options.extFrameworkPath + ' generate app -modern -starter=false ' + options.extThemeAppName + ' ./' + options.extThemeAppName + options.senchaCmdOut;
 					if(debug === true) console.log(chalk.green('***** Running: ' + theCreateCommand));
 					execSync( theCreateCommand, { cwd: output, stdio: 'inherit' });
 					if(debug === true) console.log(chalk.green('***** Ext JS app named ' + options.extThemeAppName + ' is created'))
 
 					var output = './' + extThemeAppPathAndName;
 
-					var theBuildCommand = 'sencha app build ' + 'testing' + senchaCmdOut;
+					var theBuildCommand = 'sencha app build ' + 'testing' + options.senchaCmdOut;
 					if (debug === true) console.log(chalk.green('***** Running: ' + theBuildCommand));
 					var rc = execSync(theBuildCommand, { cwd: output, stdio: 'inherit' });
-					if (debug === true) console.log(chalk.green('***** Sencha Cmd: ' + theBuildCommand + ' is completed'));
+					if (debug === true) console.log(chalk.green('***** ' + theBuildCommand + ' is completed'));
 
-					var theBuildCommand = 'sencha app build ' + 'production' + senchaCmdOut;
+					var theBuildCommand = 'sencha app build ' + 'production' + options.senchaCmdOut;
 					if (debug === true) console.log(chalk.green('***** Running: ' + theBuildCommand));
 					var rc = execSync(theBuildCommand, { cwd: output, stdio: 'inherit' });
-					if (debug === true) console.log(chalk.green('***** Sencha Cmd: ' + theBuildCommand + ' is completed'));
+					if (debug === true) console.log(chalk.green('***** ' + theBuildCommand + ' is completed'));
 
 					if (!fs.existsSync(extThemeAppPathAndName + "/build/")){fs.mkdirSync(extThemeAppPathAndName + "/build/");}
 					fs.writeFileSync(extThemeAppPathAndName + "/build/" + "boot.js", bootJS); 
@@ -45,7 +43,7 @@ module.exports = {
 					fs.writeFileSync(extThemeAppPathAndName + "/build/" + "misc.css", miscCSS); 
 					if(debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + "/build/" + 'misc.css' + ' is created'))
 				}
-			//module.exports.doIndexHTML(options, debug);
+//			module.exports.doIndexHTML(options, debug);
 			cb();
 		}).catch(function (err) {
 			console.log(err);

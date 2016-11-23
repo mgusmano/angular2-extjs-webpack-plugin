@@ -4,15 +4,10 @@ var fs = require("fs");
 var chalk = require('chalk');
 require("babel-polyfill");
 var execSync = require('child_process').execSync;
-
 var extractFromNG2 = require("./extractFromNG2");
 var Init = require('./initialize').Init;
-var bootJS = require('./artifacts').bootJS;
-var miscCSS = require('./artifacts').miscCSS;
-//const mkdirp = require('mkdirp');
-//const ncp = require('ncp').ncp;
-//const copydir = require('copy-dir');
-
+// const bootJS = require('./artifacts').bootJS;
+// const miscCSS = require('./artifacts').miscCSS;
 
 function Angular2ExtJSWebpackPlugin(options) {
 	Angular2ExtJSWebpackPlugin.prototype.options = options;
@@ -85,29 +80,26 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 
 	compiler.plugin('after-emit', function (compilation, cb) {
 
-		var senchaCmdOut = '';
-		if (options.senchaCmdOutputShow === false) {
-			senchaCmdOut = ' > ' + options.senchaCmdOutputFile;
-		}
-		try {
-			var stats = fs.lstatSync('./' + extThemeAppPathAndName);
-			if (stats.isDirectory()) {
-				if (debug === true) console.log(chalk.green('***** Ext JS theme project named ' + options.extThemeAppName + ' exists'));
-			}
-		} catch (e) {
-			var theCreateCommand = 'sencha -sdk ' + options.extFrameworkPath + ' generate app -modern -starter=false ' + options.extThemeAppName + ' ./' + options.extThemeAppName + senchaCmdOut;
-			if (debug === true) console.log(chalk.green('***** Running the Sencha Cmd: ' + theCreateCommand));
-			execSync(theCreateCommand, { cwd: output, stdio: 'inherit' });
-			if (debug === true) console.log(chalk.green('***** Ext JS app named ' + options.extThemeAppName + ' is created'));
+		// var senchaCmdOut = '';
+		// if (options.senchaCmdOutputShow === false) { senchaCmdOut = ' > ' + options.senchaCmdOutputFile;}
+		// try {
+		// 	var stats = fs.lstatSync('./' + extThemeAppPathAndName);
+		// 	if (stats.isDirectory()) {
+		// 		if(debug === true) console.log(chalk.green('***** Ext JS theme project named ' + options.extThemeAppName + ' exists'))
+		// 	}
+		// }
+		// catch (e) {
+		// 	var theCreateCommand = 'sencha -sdk ' + options.extFrameworkPath + ' generate app -modern -starter=false ' + options.extThemeAppName + ' ./' + options.extThemeAppName + senchaCmdOut;
+		// 	if(debug === true) console.log(chalk.green('***** Running the Sencha Cmd: ' + theCreateCommand));
+		// 	execSync( theCreateCommand, { cwd: output, stdio: 'inherit' });
+		// 	if(debug === true) console.log(chalk.green('***** Ext JS app named ' + options.extThemeAppName + ' is created'))
 
-			if (!fs.existsSync(extThemeAppPathAndName + "/build/")) {
-				fs.mkdirSync(extThemeAppPathAndName + "/build/");
-			}
-			fs.writeFileSync(extThemeAppPathAndName + "/build/" + "boot.js", bootJS);
-			if (debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + "/build/" + '/boot.js' + ' is created'));
-			fs.writeFileSync(extThemeAppPathAndName + "/build/" + "misc.css", miscCSS);
-			if (debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + "/build/" + '/misc.css' + ' is created'));
-		}
+		// 	if (!fs.existsSync(extThemeAppPathAndName + "/build/")){fs.mkdirSync(extThemeAppPathAndName + "/build/");}
+		// 	fs.writeFileSync(extThemeAppPathAndName + "/build/" + "boot.js", bootJS); 
+		// 	if(debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + "/build/" + '/boot.js' + ' is created'))
+		// 	fs.writeFileSync(extThemeAppPathAndName + "/build/" + "misc.css", miscCSS); 
+		// 	if(debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + "/build/" + '/misc.css' + ' is created'))
+		// }
 
 		var dependencies = options.dependencies;
 		var uniqueDependencies = [];
@@ -162,19 +154,6 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 				if (debug === true) console.log(chalk.green('***** Sencha Cmd: ' + theBuildCommand + ' is completed'));
 			}
 		}
-
-		//copydir.sync('Theme/build', 'dist/build');
-		// mkdirp('/tmp/some/path/foo', function(err) { 
-		//     // path exists unless there was an error
-		// });
-		// 		ncp.limit = 16;
-		// 		ncp("Theme/build", "dist/build", function (err) {
-		// 		if (err) {
-		// 			return console.error(err);
-		// 		}
-		// 		console.log('done!');
-		// 		});
-
 		cb();
 	});
 };
