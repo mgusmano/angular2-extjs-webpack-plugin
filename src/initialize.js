@@ -1,9 +1,12 @@
-const fs = require("fs");
-const chalk = require('chalk');
-const commandExists = require('command-exists');
-const getIndexHTML = require('./artifacts').getIndexHTML;
-const bootJS = require('./artifacts').bootJS;
-const miscCSS = require('./artifacts').miscCSS;
+'use strict';
+
+var fs = require("fs");
+var chalk = require('chalk');
+var commandExists = require('command-exists');
+var getIndexHTML = require('./artifacts').getIndexHTML;
+var appJson = require('./artifacts').appJson;
+var bootJS = require('./artifacts').bootJS;
+var miscCSS = require('./artifacts').miscCSS;
 var execSync = require('child_process').execSync;
 
 module.exports = {
@@ -24,6 +27,9 @@ module.exports = {
 					if(debug === true) console.log(chalk.green('***** Running: ' + theCreateCommand));
 					execSync( theCreateCommand, { cwd: output, stdio: 'inherit' });
 					if(debug === true) console.log(chalk.green('***** Ext JS app named ' + options.extThemeAppName + ' is created'))
+
+					fs.writeFileSync(extThemeAppPathAndName + "app.json", appJson); 
+					if(debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + 'app.json' + ' is created'))
 
 					var output = './' + extThemeAppPathAndName;
 

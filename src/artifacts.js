@@ -2,6 +2,25 @@
 
 module.exports = {
 
+	appJson: `{
+	framework: "ext",
+	toolkit : "modern",
+	"theme": "theme-triton",
+	"requires": [
+		"font-awesome",
+		"charts",
+		"pivot"
+	],
+	output: {
+		base: '.',
+		resources: {
+			path: './resources',
+			shared: "./resources"
+		}
+	}
+}
+`,
+
 	bootJS2: `var Ext = Ext || {};
 Ext.Boot = Ext.Boot || (function (emptyFn) {
 	var _tags = (Ext.platformTags = {});
@@ -50,7 +69,7 @@ Ext.Boot = {
 </html>
 `
 	},
-	
+
 	getIndexHTML2: function(indexHtmlTitle, extThemeAppPathAndName, build, extThemeAppName, rootSelector) {
 	return `<!DOCTYPE html>
 <html>
