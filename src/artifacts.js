@@ -2,7 +2,8 @@
 
 module.exports = {
 
-	appJson: `{
+	getAppJson: function() { return JSON.stringify(
+		{
 	"name": "Theme",
 	"version": "1.0.0.0",
 	"indexHtmlPath": "index.html",
@@ -128,7 +129,9 @@ module.exports = {
 	],
 	"id": "9cbb1487-acb8-4265-8440-1d31445a14b5"
 }
-`,
+
+)},
+
 
 	bootJS2: `var Ext = Ext || {};
 Ext.Boot = Ext.Boot || (function (emptyFn) {
