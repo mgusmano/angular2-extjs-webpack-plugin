@@ -3,21 +3,129 @@
 module.exports = {
 
 	appJson: `{
-	framework: "ext",
-	toolkit : "modern",
-	"theme": "theme-triton",
-	"requires": [
-		"font-awesome",
-		"charts",
-		"pivot"
+	"name": "Theme",
+	"version": "1.0.0.0",
+	"indexHtmlPath": "index.html",
+	"classpath": [
+			"app"
 	],
-	output: {
-		base: '.',
-		resources: {
-			path: './resources',
-			shared: "./resources"
-		}
+	"overrides": [
+			"overrides"
+	],
+	"framework": "ext",
+	"toolkit": "modern",
+	"theme": "theme-material",
+	"requires": [
+		"calendar",
+		"charts",
+		"d3",
+		"ux",
+		"pivot",
+		"pivot-d3",
+		"font-awesome"
+	],
+	"fashion": {
+			"inliner": {
+					"enable": false
+			}
 	},
+	"sass": {
+			"namespace": "Theme",
+			"generated": {
+					"var": "sass/save.scss",
+					"src": "sass/save"
+			},
+			"etc": [
+					"sass/etc/all.scss"
+			],
+			"var": [
+					"sass/var/all.scss",
+					"sass/var"
+			],
+			"src": [
+					"sass/src"
+			]
+	},
+	"js": [
+			{
+					"path": "${framework.dir}/build/ext-modern-all-debug.js"
+			},
+			{
+					"path": "app.js",
+					"bundle": true
+			}
+	],
+	"css": [
+			{
+					"path": "${build.out.css.path}",
+					"bundle": true,
+					"exclude": ["fashion"]
+			}
+	],
+		"loader": {
+				"cache": false,
+				"cacheParam": "_dc"
+		},
+	"production": {
+			"output": {
+					"appCache": {
+							"enable": true,
+							"path": "cache.appcache"
+					}
+			},
+			"loader": {
+					"cache": "${build.timestamp}"
+			},
+			"cache": {
+					"enable": true
+			},
+			"compressor": {
+					"type": "yui"
+			}
+	},
+	"testing": {
+	},
+	"development": {
+			"watch": {
+					"delay": 250
+			}
+	},
+	"bootstrap": {
+			"base": "${app.dir}",
+			
+			"microloader": "bootstrap.js",
+			"css": "bootstrap.css"
+	},
+	"output": {
+			"base": "${workspace.build.dir}/${build.environment}/${app.name}",
+			"appCache": {
+					"enable": false
+			}
+	},
+	"cache": {
+			"enable": false,
+			"deltas": true
+	},
+	"appCache": {
+			"cache": [
+					"index.html"
+			],
+			"network": [
+					"*"
+			],
+			"fallback": []
+	},
+	"resources": [
+			{
+					"path": "resources",
+					"output": "shared"
+			}
+	],
+	"archivePath": "archive",
+	"slicer": null,
+	"ignore": [
+			"(^|/)CVS(/?$|/.*?$)"
+	],
 	"id": "9cbb1487-acb8-4265-8440-1d31445a14b5"
 }
 `,
