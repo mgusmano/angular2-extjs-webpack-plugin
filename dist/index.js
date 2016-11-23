@@ -12,6 +12,8 @@ var miscCSS = require('./artifacts').miscCSS;
 var mkdirp = require('mkdirp');
 var ncp = require('ncp').ncp;
 
+var copydir = require('copy-dir');
+
 function Angular2ExtJSWebpackPlugin(options) {
 	Angular2ExtJSWebpackPlugin.prototype.options = options;
 }
@@ -217,19 +219,23 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 		var rc = execSync(theBuildCommand, { cwd: output, stdio: 'inherit' });
 		if (debug === true) console.log(chalk.green('***** Sencha Cmd: ' + theBuildCommand + ' is completed'));
 
-		mkdirp('/tmp/some/path/foo', function (err) {
+		copydir.sync('Theme/build', 'dist/build');
 
-			// path exists unless there was an error
+		// mkdirp('/tmp/some/path/foo', function(err) { 
 
-		});
+		//     // path exists unless there was an error
 
-		ncp.limit = 16;
-		ncp("Theme/build", "dist/build", function (err) {
-			if (err) {
-				return console.error(err);
-			}
-			console.log('done!');
-		});
+		// });
+
+
+		// 		ncp.limit = 16;
+		// 		ncp("Theme/build", "dist/build", function (err) {
+		// 		if (err) {
+		// 			return console.error(err);
+		// 		}
+		// 		console.log('done!');
+		// 		});
+
 
 		cb();
 	});
