@@ -27,7 +27,7 @@ module.exports = {
 				execSync(theCreateCommand, { cwd: output, stdio: 'inherit' });
 				if (debug === true) console.log(chalk.green('***** Ext JS app named ' + options.extThemeAppName + ' is created'));
 
-				fs.writeFileSync(extThemeAppPathAndName + "/app.json", getAppJson(option));
+				fs.writeFileSync(extThemeAppPathAndName + "/app.json", getAppJson(options));
 				if (debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + '/app.json' + ' is created'));
 
 				var output = './' + extThemeAppPathAndName;
