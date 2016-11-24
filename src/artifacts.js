@@ -2,9 +2,9 @@
 
 module.exports = {
 
-	getAppJson: function() { return JSON.stringify(
-		{
-	"name": "Theme",
+	getAppJson: function(option) { return JSON.stringify(
+{
+	"name": "${option.Theme}x",
 	"version": "1.0.0.0",
 	"indexHtmlPath": "index.html",
 	"classpath": [
@@ -129,7 +129,6 @@ module.exports = {
 	],
 	"id": "9cbb1487-acb8-4265-8440-1d31445a14b5"
 }
-
 )},
 
 
