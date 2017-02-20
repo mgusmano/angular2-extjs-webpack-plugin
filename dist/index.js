@@ -25,6 +25,7 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 		optiond.senchaCmdOut = ' > ' + options.senchaCmdOutputFile;
 	}
 
+	var firstFound = true;
 	var c = compiler;
 	var y = chalk.yellow;
 
@@ -44,7 +45,10 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 					var contents = fs.readFileSync(module.resource, 'utf8');
 					var statements = extractFromNG2(module.context, contents, prefix, debug, module.resource);
 					if (statements.length) {
-						if (debug === true) console.log(chalk.green('***** Found Ext JS requires in: ' + module.resource + ''));
+						var n = '';if (firstFound === true) {
+							n = '\n';firstFound = false;
+						};
+						if (debug === true) console.log(chalk.green(n + '***** Found Ext JS requires in: ' + module.resource + ''));
 						var _iteratorNormalCompletion = true;
 						var _didIteratorError = false;
 						var _iteratorError = undefined;
@@ -122,10 +126,10 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 		if (fs.existsSync(extThemeAppPathAndName + "/app.js")) {
 			var appJsFileContents = fs.readFileSync(extThemeAppPathAndName + "/app.js", 'utf8');
 			if (appJsFileContents === theFile) {
-				if (debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + '/app.js has no changes'));
+				if (debug === true) console.log(chalk.green('\n***** ' + extThemeAppPathAndName + '/app.js has no changes'));
 			} else {
 				fs.writeFileSync(extThemeAppPathAndName + "/app.js", theFile);
-				if (debug === true) console.log(chalk.green('***** ' + extThemeAppPathAndName + '/app.js is created'));
+				if (debug === true) console.log(chalk.green('\n***** ' + extThemeAppPathAndName + '/app.js is created'));
 				if (options.detail === true) console.log(chalk.blue(theFile));
 
 				var theBuildCommand = 'sencha app build ' + options.build + options.senchaCmdOut;
