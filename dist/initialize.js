@@ -22,7 +22,8 @@ module.exports = {
 					if (debug === true) console.log(chalk.green('***** Ext JS theme project named ' + options.extThemeAppName + ' exists'));
 				}
 			} catch (e) {
-				var theCreateCommand = 'sencha -sdk ' + options.extFrameworkPath + ' generate app -modern -starter=false ' + options.extThemeAppName + ' ./' + options.extThemeAppName + options.senchaCmdOut;
+				var theCreateCommand = 'sencha -sdk ' + options.extFrameworkPath + ' generate app -modern -starter=false ' + options.extThemeAppName + ' ' + extThemeAppPathAndName + options.senchaCmdOut;
+
 				if (debug === true) console.log(chalk.green('***** Running: ' + theCreateCommand));
 				execSync(theCreateCommand, { cwd: output, stdio: 'inherit' });
 				if (debug === true) console.log(chalk.green('***** Ext JS app named ' + options.extThemeAppName + ' is created'));

@@ -4,6 +4,7 @@ const traverse = require("ast-traverse");
 const astring = require('astring');
 var fs = require("fs");
 var typescript = require("typescript");
+var chalk = require('chalk');
 
 module.exports = function extractFromNG2(moduleContext, ts, prefix='x-', debug, moduleResource) {
 	var statements = [];
@@ -20,7 +21,7 @@ module.exports = function extractFromNG2(moduleContext, ts, prefix='x-', debug, 
 							if (node.expression.callee.object.name === 'Ext') {
 								for (let attribute of node.expression.arguments[0].elements) {
 									//statements.push( { xclass: attribute.value } );
-									console.log('a.v: ' + attribute.value)
+									//console.log('a.v: ' + attribute.value)
 									statements.push( attribute.value );
 								}
 							}
@@ -49,7 +50,7 @@ module.exports = function extractFromNG2(moduleContext, ts, prefix='x-', debug, 
 							var nl = RegExp("\\n", "g");
 							var template = template.replace(tab,' ');
 							var template = template.replace(nl,' ');
-							console.log(chalk.red('t: ' + template))
+							//console.log(chalk.red('t: ' + template))
 							//fix this
 							var w = '<x-'
 							var searchpoint = 0;

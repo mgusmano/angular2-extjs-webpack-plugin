@@ -40,12 +40,14 @@ Angular2ExtJSWebpackPlugin.prototype.apply = function (compiler) {
 	compiler.plugin('compilation', function (compilation, params) {
 
 		compilation.plugin('normal-module-loader', function (loaderContext, module) {
+			firstFound = true;
 			if (module.resource && module.resource.endsWith('.ts')) {
 				try {
 					var contents = fs.readFileSync(module.resource, 'utf8');
 					var statements = extractFromNG2(module.context, contents, prefix, debug, module.resource);
 					if (statements.length) {
-						var n = '';if (firstFound === true) {
+						var n = '';
+						if (firstFound === true) {
 							n = '\n';firstFound = false;
 						};
 						if (debug === true) console.log(chalk.green(n + '***** Found Ext JS requires in: ' + module.resource + ''));

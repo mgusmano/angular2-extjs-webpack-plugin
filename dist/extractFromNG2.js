@@ -32,6 +32,7 @@ module.exports = function extractFromNG2(moduleContext, ts) {
 										var attribute = _step.value;
 
 										//statements.push( { xclass: attribute.value } );
+										console.log('a.v: ' + attribute.value);
 										statements.push(attribute.value);
 									}
 								} catch (err) {
@@ -74,6 +75,7 @@ module.exports = function extractFromNG2(moduleContext, ts) {
 							var nl = RegExp("\\n", "g");
 							var template = template.replace(tab, ' ');
 							var template = template.replace(nl, ' ');
+							console.log(chalk.red('t: ' + template));
 							//fix this
 							var w = '<x-';
 							var searchpoint = 0;
